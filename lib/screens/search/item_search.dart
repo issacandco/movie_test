@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:get/get.dart';
 import 'package:movie_test/extensions/date_time_extension.dart';
 import 'package:movie_test/models/genre_model.dart';
 import 'package:movie_test/utils/get_storage_util.dart';
