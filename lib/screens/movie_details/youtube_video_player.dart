@@ -37,16 +37,13 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
 
   @override
   void dispose() {
+    _controller.stopVideo();
     _controller.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // return YoutubePlayer(
-    //   controller: _controller,
-    //   aspectRatio: 16 / 9,
-    // );
     return YoutubePlayerScaffold(
       controller: _controller,
       aspectRatio: 16 / 9,

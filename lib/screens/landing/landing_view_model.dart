@@ -18,6 +18,8 @@ class LandingViewModel extends BaseViewModel {
   RxList<Map<String, dynamic>> categoryListStream = <Map<String, dynamic>>[].obs;
   RxMap<String, dynamic> selectedCategoryStream = <String, dynamic>{}.obs;
   RxList<MovieModel> movieListStream = <MovieModel>[].obs;
+  RxInt totalPageStream = 0.obs;
+  RxBool isScrollToEndStream = false.obs;
 
   final MovieRepository _movieRepository = MovieRepository();
 
@@ -38,6 +40,10 @@ class LandingViewModel extends BaseViewModel {
     getNowPlayingMovieList();
 
     selectedCategoryStream.value = categoryListStream.first;
+  }
+
+  setScrollToEnd(bool value) {
+    isScrollToEndStream.value = value;
   }
 
   void getMovieGenreList() async {
@@ -61,9 +67,29 @@ class LandingViewModel extends BaseViewModel {
     }
   }
 
+  void updatePage(int page) {
+    currentPage = page;
+    isScrollToEndStream.value = false;
+    switch (selectedCategoryStream['categoryKey']) {
+      case MovieCategory.nowPlaying:
+        getNowPlayingMovieList();
+        break;
+      case MovieCategory.popular:
+        getPopularMovieList();
+        break;
+      case MovieCategory.topRated:
+        getTopRatedMovieList();
+        break;
+      case MovieCategory.upcoming:
+        getUpcomingMovieList();
+        break;
+    }
+  }
+
   void onCategorySelected(Map<String, dynamic> value) {
     selectedCategoryStream.value = value;
     currentPage = 1;
+    isScrollToEndStream.value = false;
 
     switch (value['categoryKey']) {
       case MovieCategory.nowPlaying:
@@ -98,7 +124,7 @@ class LandingViewModel extends BaseViewModel {
           final totalPage = data['total_pages'] as int;
 
           List<MovieModel> movieList = (data['results'] as List).map((e) => MovieModel.fromJson(e as Map<String, dynamic>)).toList();
-          print(totalPage);
+          totalPageStream.value = totalPage;
           movieListStream.value = movieList;
         },
         error: (e) {

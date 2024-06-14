@@ -145,7 +145,7 @@ class ItemSearch extends StatelessWidget {
               }
 
               return Container(
-                padding: EdgeInsets.symmetric(horizontal: AppSize.size_16, vertical: AppSize.size_8),
+                padding: EdgeInsets.symmetric(horizontal: AppSize.size_8, vertical: AppSize.size_4),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppSize.size_8),
                   color: AppColor.primaryColor,
@@ -154,7 +154,7 @@ class ItemSearch extends StatelessWidget {
                   genre,
                   style: AppTextStyle.customTextStyle(
                     color: AppColor.white,
-                    fontSize: AppSize.textSize_14,
+                    fontSize: AppSize.textSize_12,
                     fontWeightType: FontWeightType.medium,
                   ),
                 ),

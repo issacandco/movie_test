@@ -47,51 +47,55 @@ class _GenreScreenState extends BaseState<GenreScreen> with BasicPage {
   }
 
   Widget _buildGenreList() {
-    return Container(
-      child: GetUtil.getX<GenreViewModel>(
-        builder: (vm) {
-          List<GenreModel> genreList = vm.genreListStream;
-          return Visibility(
-            visible: genreList.isNotEmpty,
-            replacement: const NoDataWidget(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'may_select_multiple_genre'.translate(),
-                  style: AppTextStyle.customTextStyle(
-                    fontSize: AppSize.textSize_16,
-                    fontWeightType: FontWeightType.medium,
+    return Flexible(
+      child: Container(
+        child: GetUtil.getX<GenreViewModel>(
+          builder: (vm) {
+            List<GenreModel> genreList = vm.genreListStream;
+            return Visibility(
+              visible: genreList.isNotEmpty,
+              replacement: const NoDataWidget(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'may_select_multiple_genre'.translate(),
+                    style: AppTextStyle.customTextStyle(
+                      fontSize: AppSize.textSize_16,
+                      fontWeightType: FontWeightType.medium,
+                    ),
                   ),
-                ),
-                SizedBox(height: AppSize.size_8),
-                Wrap(
-                  spacing: AppSize.size_8,
-                  runSpacing: AppSize.size_8,
-                  children: genreList
-                      .map(
-                        (e) => InkWell(
-                          onTap: () {
-                            vm.onSelectGenre(e);
-                          },
-                          child: Chip(
-                            backgroundColor: vm.isSelected(e) ? AppColor.primaryColor : Colors.transparent,
-                            label: Text(
-                              e.name ?? '',
-                              style: AppTextStyle.customTextStyle(
-                                color: vm.isSelected(e) ? Colors.white : AppColor.black,
-                                fontSize: AppSize.textSize_16,
+                  SizedBox(height: AppSize.size_8),
+                  Flexible(
+                    child: Wrap(
+                      spacing: AppSize.size_8,
+                      runSpacing: AppSize.size_8,
+                      children: genreList
+                          .map(
+                            (e) => InkWell(
+                              onTap: () {
+                                vm.onSelectGenre(e);
+                              },
+                              child: Chip(
+                                backgroundColor: vm.isSelected(e) ? AppColor.primaryColor : Colors.transparent,
+                                label: Text(
+                                  e.name ?? '',
+                                  style: AppTextStyle.customTextStyle(
+                                    color: vm.isSelected(e) ? Colors.white : AppColor.black,
+                                    fontSize: AppSize.textSize_16,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
-            ),
-          );
-        },
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

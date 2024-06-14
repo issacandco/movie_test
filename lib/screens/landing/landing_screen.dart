@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_test/models/movie_model.dart';
 import 'package:movie_test/screens/landing/landing_view_model.dart';
 import 'package:movie_test/screens/landing/ui/item_category.dart';
 import 'package:movie_test/utils/get_util.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../base/base_page.dart';
+import '../../styles/app_color.dart';
 import '../../styles/app_size.dart';
 import '../../styles/app_text_style.dart';
 import '../../utils/asset_util.dart';
@@ -23,6 +22,7 @@ class LandingScreen extends BasePage {
 
 class _LandingScreenState extends BaseState<LandingScreen> with BasicPage, WidgetsBindingObserver {
   final LandingViewModel _landingViewModel = GetUtil.put(LandingViewModel());
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
@@ -48,6 +48,7 @@ class _LandingScreenState extends BaseState<LandingScreen> with BasicPage, Widge
           _buildTitleBar(),
           _buildCategories(),
           _buildMovieList(),
+          _buildPagination(),
         ],
       ),
     );
@@ -129,20 +130,78 @@ class _LandingScreenState extends BaseState<LandingScreen> with BasicPage, Widge
   Widget _buildMovieList() {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: AppSize.standardSize),
+        padding: EdgeInsets.symmetric(horizontal: AppSize.standardSize).copyWith(
+          bottom: AppSize.standardSize,
+        ),
         child: GetUtil.getX<LandingViewModel>(
           builder: (vm) {
             List<MovieModel> movieList = vm.movieListStream;
 
             return PageView.builder(
+              controller: _pageController,
               scrollDirection: Axis.vertical,
               itemCount: movieList.length,
               itemBuilder: (context, index) {
                 return ItemMovie(movieModel: movieList[index]);
               },
+              onPageChanged: (index) {
+                if (index == movieList.length - 1) {
+                  vm.setScrollToEnd(true);
+                } else {
+                  vm.setScrollToEnd(false);
+                }
+              },
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildPagination() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: AppSize.standardSize).copyWith(
+        bottom: AppSize.standardSize,
+      ),
+      child: GetUtil.getX<LandingViewModel>(
+        builder: (vm) {
+          bool isScrollToEnd = vm.isScrollToEndStream.value;
+          int totalPage = vm.totalPageStream.value;
+          return Visibility(
+            visible: isScrollToEnd && totalPage > 1,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(totalPage, (index) {
+                  int pageNumber = index + 1;
+                  return Padding(
+                    padding: EdgeInsets.all(AppSize.size_4),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppSize.size_8), // Adjust the radius as needed
+                        ),
+                      ),
+                      onPressed: () {
+                        vm.updatePage(pageNumber);
+                        _pageController.jumpToPage(0);
+                      },
+                      child: Text(
+                        '$pageNumber',
+                        style: AppTextStyle.customTextStyle(
+                          color: Colors.white,
+                          fontSize: AppSize.textSize_16,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
