@@ -2,13 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 import 'package:movie_test/extensions/date_time_extension.dart';
+import 'package:movie_test/models/genre_model.dart';
+import 'package:movie_test/utils/get_storage_util.dart';
 import 'package:movie_test/utils/get_util.dart';
 
 import '../../models/movie_model.dart';
 import '../../styles/app_color.dart';
 import '../../styles/app_size.dart';
 import '../../styles/app_text_style.dart';
+import '../../utils/constant_util.dart';
 import '../../widgets/theme/theme_shimmer.dart';
 import '../movie_details/movie_details_screen.dart';
 
@@ -123,7 +127,40 @@ class ItemSearch extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: AppSize.size_8),
+            _buildGenres(),
           ],
         ),
+      );
+
+  Widget _buildGenres() => Wrap(
+        spacing: AppSize.size_8,
+        runSpacing: AppSize.size_8,
+        children: movieModel.genreIds?.map((e) {
+              List<GenreModel> genreList = GetStorageUtil.readFromGetStorage<List<GenreModel>>(key: ConstantUtil.keyGenres) ?? [];
+              String genre = '';
+
+              if (genreList.isNotEmpty) {
+                Map<int, String> genreMap = {for (var genre in genreList) genre.id ?? 0: genre.name ?? ''};
+                genre = genreMap[e] ?? '';
+              }
+
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: AppSize.size_16, vertical: AppSize.size_8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppSize.size_8),
+                  color: AppColor.primaryColor,
+                ),
+                child: Text(
+                  genre,
+                  style: AppTextStyle.customTextStyle(
+                    color: AppColor.white,
+                    fontSize: AppSize.textSize_14,
+                    fontWeightType: FontWeightType.medium,
+                  ),
+                ),
+              );
+            }).toList() ??
+            [],
       );
 }
