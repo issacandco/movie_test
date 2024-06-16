@@ -1,12 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:movie_test/utils/general_util.dart';
 import 'package:movie_test/utils/get_storage_util.dart';
 
 import 'app/app.dart';
 
 FutureOr<void> main() async {
   await _initStorage();
+
+  GeneralUtil.transparentStatusBar();
+
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(const App());
 }

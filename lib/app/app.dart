@@ -55,11 +55,13 @@ class _AppState extends State<App> {
               themeMode = ThemeMode.dark;
               break;
             default:
-              themeMode = ThemeMode.system;
+              // themeMode = ThemeMode.system;
+              themeMode = ThemeMode.light;
               break;
           }
 
           return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
             title: ConstantUtil.appName,
             translations: Messages(),
             fallbackLocale: const Locale('en', 'US'),

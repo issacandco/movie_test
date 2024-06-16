@@ -34,6 +34,7 @@ mixin BasicPage<Page extends BasePage> on BaseState<Page> {
       onTap: () => GeneralUtil.hideKeyboard(context),
       child: Scaffold(
         key: globalKey,
+        extendBody: true,
         appBar: appBar(),
         body: NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (scroll) {

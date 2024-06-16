@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:movie_test/extensions/date_time_extension.dart';
 import 'package:movie_test/utils/constant_util.dart';
 
 part 'movie_model.g.dart';
@@ -35,6 +36,7 @@ class MovieModel {
   final String? status;
 
   String? get poster => posterPath != null ? '${ConstantUtil.posterBaseUrl}$posterPath' : '';
+  DateTime get releaseDateFormatted => releaseDate?.parseStringToDateTime() ?? DateTime.now();
 
   MovieModel({
     this.adult,

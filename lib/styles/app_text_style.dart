@@ -64,7 +64,7 @@ class AppTextStyle {
     String? fontFamily,
     List<String>? fontFamilyFallback,
   }) {
-    return GoogleFonts.poppins(
+    return GoogleFonts.roboto(
       textStyle: TextStyle(
         fontSize: fontSize ?? AppSize.standardTextSize,
         color: color ?? Get.theme.colorScheme.tertiary,

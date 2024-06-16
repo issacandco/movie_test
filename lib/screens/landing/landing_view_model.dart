@@ -114,7 +114,6 @@ class LandingViewModel extends BaseViewModel {
       final request = {
         'language': 'en-US',
         'page': currentPage,
-        'sort_by': 'release_date.desc',
       };
 
       final response = await _movieRepository.getNowPlayingMovieList(request);
@@ -124,6 +123,7 @@ class LandingViewModel extends BaseViewModel {
           final totalPage = data['total_pages'] as int;
 
           List<MovieModel> movieList = (data['results'] as List).map((e) => MovieModel.fromJson(e as Map<String, dynamic>)).toList();
+          movieList.sort((a, b) => b.releaseDateFormatted.compareTo(a.releaseDateFormatted));
           totalPageStream.value = totalPage;
           movieListStream.value = movieList;
         },
@@ -155,6 +155,7 @@ class LandingViewModel extends BaseViewModel {
           final totalPage = data['total_pages'] as int;
 
           List<MovieModel> movieList = (data['results'] as List).map((e) => MovieModel.fromJson(e as Map<String, dynamic>)).toList();
+          movieList.sort((a, b) => b.releaseDateFormatted.compareTo(a.releaseDateFormatted));
           print(totalPage);
           movieListStream.value = movieList;
         },
@@ -186,6 +187,7 @@ class LandingViewModel extends BaseViewModel {
           final totalPage = data['total_pages'] as int;
 
           List<MovieModel> movieList = (data['results'] as List).map((e) => MovieModel.fromJson(e as Map<String, dynamic>)).toList();
+          movieList.sort((a, b) => b.releaseDateFormatted.compareTo(a.releaseDateFormatted));
           print(totalPage);
           movieListStream.value = movieList;
         },
@@ -217,6 +219,7 @@ class LandingViewModel extends BaseViewModel {
           final totalPage = data['total_pages'] as int;
 
           List<MovieModel> movieList = (data['results'] as List).map((e) => MovieModel.fromJson(e as Map<String, dynamic>)).toList();
+          movieList.sort((a, b) => b.releaseDateFormatted.compareTo(a.releaseDateFormatted));
           print(totalPage);
           movieListStream.value = movieList;
         },

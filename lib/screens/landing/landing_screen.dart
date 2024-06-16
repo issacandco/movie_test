@@ -64,7 +64,7 @@ class _LandingScreenState extends BaseState<LandingScreen> with BasicPage, Widge
           Text(
             'tmdb'.translate(),
             style: AppTextStyle.customTextStyle(
-              fontSize: AppSize.textSize_22,
+              fontSize: AppSize.textSize_24,
               fontWeightType: FontWeightType.bold,
             ),
           ),
